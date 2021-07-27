@@ -1,0 +1,94 @@
+
+(define empty?
+  (lambda (lst)
+    (eq? lst '())
+  )
+)
+
+(define append 
+  (lambda(lst1 lst2)
+    (if (empty? lst1)
+      lst2
+      (cons (car lst1) (append (cdr lst1) lst2))
+    )
+  )
+)
+
+(define reverse 
+  (lambda (lst)
+    (if (empty? lst)
+      lst
+      (append (reverse (cdr lst)) (list (car lst)))
+    )
+  )
+)
+
+(define multy-append 
+  (lambda (to-dup counter)
+    (if (= counter 0)
+      '()
+      (append (list to-dup) (multy-append to-dup (- counter 1)))    
+    )       
+  )
+)
+
+
+(define duplicate-items
+  (lambda(lst dup-count)
+    (if (empty? lst)
+      '()
+      (append (multy-append (car lst) (car dup-count)) (duplicate-items (cdr lst) (append (cdr dup-count) (list (car dup-count)))))    
+    )
+  )
+)
+
+
+(define payment
+  (lambda (n coins-lst)
+    (if (= n 0)
+      1
+    (if (< n 0)
+      0
+    (if (empty? coins-lst)
+      0
+    (+  (payment (- n (car coins-lst)) (cdr coins-lst)) 
+        (payment n (clear-all (car coins-lst) coins-lst)))))) 
+  )
+)
+
+(define clear-all
+  (lambda (x lst)
+    (if (empty? lst)
+      '()
+    (if (= (car lst) x)
+      (clear-all x (cdr lst))
+    (cons (car lst) 
+      (clear-all x (cdr lst)))))
+  )
+)
+
+
+(define compose-n
+  (lambda( f n)
+    (if (= n 1)
+      (lambda (x)
+        (f x)
+      )
+      (lambda (x)
+        ((compose-n f (- n 1))(f x))
+      )
+    )
+  )
+)
+
+
+
+
+
+
+
+
+
+
+
+
